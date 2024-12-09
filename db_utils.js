@@ -1,15 +1,11 @@
 import mysql from "mysql2";
 import "dotenv/config";
 
-const db = process.env.DATABASE_NAME;
-const dbLogin = process.env.DATABASE_USERNAME;
-const dbPwd = process.env.DATABASE_PASSWORD;
-
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: dbLogin,
-    password: dbPwd,
-    database: db
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME
 });
 
 export function getConnection(){
@@ -30,4 +26,23 @@ export function getUsers(){
             }
         }
     );
+}
+
+export function checkUser(username){
+    connection.execute(
+        'SELECT email_adress FROM users WHERE email_adress = ?',
+        [username],
+        function (err, res, fields){
+            console.log(res);
+            console.log(fields);
+            console.log(err)
+            if(err){
+                return err;
+            } else if (res.length === 0){
+                return false;
+            }else {
+                return true;
+            }
+        }
+    )
 }
