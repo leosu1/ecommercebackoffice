@@ -3,9 +3,11 @@ import * as db from "./db_utils.js";
 import * as middleware from "./middlewares.js";
 import path from 'path';
 import bodyParser from 'body-parser';
+import bcrypt from 'bcrypt';
 
 const app = express();
 const port = 3000;
+const saltRounds = 10;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join('views'));
@@ -26,7 +28,10 @@ app.post('/register', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    db.createUser(username, password);
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+        db.createUser(username, hash);
+    })
+
     res.redirect('/login');
 })
 
