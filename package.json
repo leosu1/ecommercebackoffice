@@ -1,0 +1,25 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.0",
+    "mysql2": "^3.11.5",
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7"
+  }
+}
