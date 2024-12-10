@@ -12,9 +12,9 @@ export function getConnection(){
     return connection;
 }
 
-export function getUsers(){
+export function getCustomers(){
     connection.query(
-        'SELECT * FROM users',
+        'SELECT * FROM customers',
         function (err, results, fields) {
             if(err){
                 console.log(err);
@@ -28,9 +28,24 @@ export function getUsers(){
     );
 }
 
+export function createUser(username, password){
+    connection.execute(
+        "INSERT INTO admin_users (username, password) VALUES (?, ?)",
+        [username, password],
+        function (err, res, fields){
+            if(err){
+                console.log(`error in query : ${err.sqlMessage}`)
+                return 0;
+            }
+            console.log(`Inserted a new admin in database (id : ${res.insertId})`);
+            return 1;
+        }
+    )
+}
+
 export function checkUser(username){
     connection.execute(
-        'SELECT email_adress FROM users WHERE email_adress = ?',
+        'SELECT username FROM admin_users WHERE username = ?',
         [username],
         function (err, res, fields){
             console.log(res);
@@ -39,9 +54,9 @@ export function checkUser(username){
             if(err){
                 return err;
             } else if (res.length === 0){
-                return false;
+                return 'doesnt exist';
             }else {
-                return true;
+                return 'exists';
             }
         }
     )

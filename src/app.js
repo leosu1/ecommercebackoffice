@@ -1,5 +1,6 @@
 import express from "express";
 import * as db from "./db_utils.js";
+import * as middleware from "./middlewares.js";
 import path from 'path';
 import bodyParser from 'body-parser';
 
@@ -16,18 +17,27 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
-app.post('/newuser', (req, res) => {
+// registration routing
+app.get('/register', (req, res) => {
+    res.render('register');
+})
+app.post('/register', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    console.log(db.checkUser(username));
-    
-    res.redirect('/');
+    db.createUser(username, password);
+    res.redirect('/login');
 })
+
+// login handling
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+app.post('/login', (req, res) => {
+    res.send('hi');
+})
+
 
 app.listen(port, () => {
     console.log(`App running at port ${port} on localhost`);
