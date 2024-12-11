@@ -21,6 +21,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: { 
         secure: false,
+        maxAge: 24 * 60 * 60 * 1000,
+        rolling: true,
     }
 }));
 app.use(middleware.sessionLogger);
@@ -54,14 +56,6 @@ app.post('/register', async (req, res) => {
         }
     } catch (err) {
         res.status(500).send('error');
-    }
-});
-
-app.get('/profile', (req, res) => {
-    if (req.session.user) {
-        res.render('profile', { user: req.session.user });
-    } else {
-        res.status(401).send('You are not logged in.');
     }
 });
 
