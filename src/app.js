@@ -25,8 +25,10 @@ app.use(session({
         rolling: true,
     }
 }));
-app.use(middleware.sessionLogger);
+app.use(middleware.routeProtection);
 
+
+// homepage
 app.get('/', (req, res) => {
     res.render('index', {user: req.session.user});
 });

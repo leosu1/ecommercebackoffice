@@ -21,6 +21,20 @@ export async function getUserById(id){
     }
 }
 
+export async function getUserByIdAndUsername(id, username){
+    try {
+        const [res, fields] = await connection.execute(
+            'SELECT * FROM admin_users WHERE id = ? and username = ?',
+            [id, username]
+        );
+        return res;
+    } catch (err) {
+        console.log(`Couldn't fetch user with id ${id} :\n${err.sqlMessage}`);
+        return null;
+    }
+}
+
+
 export async function createUser(username, password){
     try {
         const [results, fields] = await connection.execute(
