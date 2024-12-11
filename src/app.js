@@ -53,11 +53,12 @@ app.post('/register', async (req, res) => {
                 id: result[0].id,
                 username: result[0].username
             };
-            console.log('User logged in :', req.session.user);
+            console.log('User logged in :', req.session.user.id);
             res.status(200).redirect('/');
         }
-    } catch (err) {
-        res.status(500).send('error');
+    } 
+    catch (err) {
+        res.status(500).send('There was an error creating your account, please try again.');
     }
 });
 
@@ -65,8 +66,27 @@ app.post('/register', async (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login');
 });
-app.post('/login', (req, res) => {
-    res.send('hi');
+app.post('/login', async (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    console.log(username, password)
+    try {
+        const user = await db.getUserByUsernameAndPassword(username, password);
+        console.log(user)
+        if (user === null){
+            res.status(500).send('There was an error logging you in, please try again.');
+        } else {
+            req.session.user = {
+                id: user.id,
+                username: user.username
+            };
+            console.log('User logged in :', req.session.user.id);
+            res.status(200).redirect('/');
+        }
+    } 
+    catch (err) {
+        res.status(500).send('There was an error logging you in, please try again.');
+    }
 });
 
 app.get('/logout', (req, res) => {
@@ -77,6 +97,14 @@ app.get('/logout', (req, res) => {
 
         res.redirect('/');
     })
+})
+
+app.get('/customers', async (req, res) => {
+    const customers = await db.getCustomers();
+    console.log(customers);
+    res.render('customers', {
+        customers: customers,
+    });
 })
 
 

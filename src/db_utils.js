@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import bcrypt from "bcrypt";
 import "dotenv/config";
 
 const connection = await mysql.createConnection({
@@ -15,7 +16,8 @@ export async function getUserById(id){
             [id]
         );
         return res;
-    } catch (err) {
+    } 
+    catch (err) {
         console.log(`Couldn't fetch user with id ${id} :\n${err.sqlMessage}`);
         return null;
     }
@@ -24,12 +26,39 @@ export async function getUserById(id){
 export async function getUserByIdAndUsername(id, username){
     try {
         const [res, fields] = await connection.execute(
-            'SELECT * FROM admin_users WHERE id = ? and username = ?',
+            'SELECT * FROM admin_users WHERE id = ? AND username = ?',
             [id, username]
         );
         return res;
-    } catch (err) {
+    } 
+    catch (err) {
         console.log(`Couldn't fetch user with id ${id} :\n${err.sqlMessage}`);
+        return null;
+    }
+}
+
+export async function getUserByUsernameAndPassword(username, password){
+    try {
+        const [res, fields] = await connection.execute(
+            'SELECT * FROM admin_users WHERE username = ?',
+            [username]
+        );
+
+        if (res.length === 0) {
+            return null;
+        }
+
+        const user = res[0];
+        const checkPassword = await bcrypt.compare(password, user.password);
+
+        if (!checkPassword) {
+            return null;
+        }
+
+        return user;
+    } 
+    catch (err) {
+        console.log(`Couldn't fetch user :\n${err.sqlMessage}`);
         return null;
     }
 }
@@ -43,8 +72,22 @@ export async function createUser(username, password){
         ); 
         console.log(`New admin added to database (id: ${results.insertId})`);
         return await getUserById(results.insertId);
-    }catch (err) {
+    }
+    catch (err) {
         console.log(`Error detected trying to create a new admin :\n${err.sqlMessage}`);
+        return null;
+    }
+}
+
+export async function getCustomers(){
+    try {
+        const [result, fields] = await connection.query(
+            'SELECT * FROM customers'
+        );
+        return result;
+    }
+    catch (err){
+        console.log('Requested data could not be found :\n', err.sqlMessage);
         return null;
     }
 }
