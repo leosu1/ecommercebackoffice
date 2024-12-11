@@ -9,14 +9,29 @@
     <h1>Customers</h1>
 
     <table>
-        <th>
-            <td>Id</td>
-            <td>Firstname</td>
-            <td>Lastname</td>
-            <td>Email adress</td>
-            <td>Phone number</td>
-            <td>Member since</td>
-        </th>
+        <tr>
+            <th>Id</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email address</th>
+            <th>Phone number</th>
+            <th>Member since</th>
+            <th>Options</th>
+        </tr>
+        <% customers.forEach(customer => { %>
+            <tr>
+                <td><%- customer.customer_id %></td>
+                <td><%- customer.firstname %></td>
+                <td><%- customer.lastname %></td>
+                <td><%- customer.email_adress %></td>
+                <td><%- customer.phone_number %></td>
+                <td><%- customer.created_at.toDateString() %></td>
+                <td>
+                    <a href="">Edit</a>
+                    <a href="">Remove</a>
+                </td>
+            </tr>
+        <% }) %>
 
     </table>
 </body>

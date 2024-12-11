@@ -21,7 +21,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: { 
         secure: false,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000, //session active for one day
         rolling: true,
     }
 }));
@@ -69,7 +69,7 @@ app.get('/login', (req, res) => {
 app.post('/login', async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
-    console.log(username, password)
+    
     try {
         const user = await db.getUserByUsernameAndPassword(username, password);
         console.log(user)
