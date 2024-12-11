@@ -26,14 +26,7 @@ app.use(session({
 app.use(middleware.sessionLogger);
 
 app.get('/', (req, res) => {
-    let username;
-    if(req.session.user){
-        username = req.session.user.username;
-    }else{
-        username = '';
-    }
-    console.log('session sur la page d\'accueil:', req.session);
-    res.render('index', {username: username});
+    res.render('index', {user: req.session.user});
 });
 
 
@@ -49,7 +42,7 @@ app.post('/register', async (req, res) => {
         const hash = await bcrypt.hash(password, saltRounds);
         const result = await db.createUser(username, hash);
 
-        if (result === null){
+        if (result === null || result.length === 0){
             res.status(500).send('There was an error creating your account, please try again.');
         } else {
             req.session.user = {
@@ -79,6 +72,16 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     res.send('hi');
 });
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Failed to logout.');
+        }
+
+        res.redirect('/');
+    })
+})
 
 
 

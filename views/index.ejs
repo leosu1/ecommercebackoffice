@@ -8,9 +8,14 @@
 </head>
 <body class="w-2/3 m-auto py-5">
     <h1 class="text-2xl text-end">Welcome to the e-commerce app back office</h1>
-    <a href="">Login</a>
-    <a href="/register">Register</a>
-
-    <p>Logged in as <%= username %></p>
+    
+    <% if (user) { %>
+        <p>Logged in as <%= user.username %></p>
+        <a href="/logout">Logout</a>
+    <% } else { %>
+        <p>Login or create an account in order to access the site's functionnality and manage the database.</p>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    <% } %>
 </body>
 </html>
