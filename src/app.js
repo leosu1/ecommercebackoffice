@@ -24,7 +24,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: false, //only for development context
+        secure: false, //only for development context because no HTTPS
         maxAge: 24 * 60 * 60 * 1000, //session active for one day
         rolling: true,
     }

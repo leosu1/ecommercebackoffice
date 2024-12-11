@@ -28,6 +28,7 @@ export async function routeProtection (req, res, next) {
         next();
     } else {
         console.log('Protected route requested :', url);
+        
         const authorization = await isUserLoggedIn(req);
 
         if (authorization === true){
