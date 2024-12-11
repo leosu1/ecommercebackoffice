@@ -18,11 +18,9 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'this is a test',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { 
-        secure: true,
-        httpOnly: true,
-        sameSite: 'strict'
+        secure: false,
     }
 }));
 app.use(middleware.sessionLogger);
@@ -34,6 +32,7 @@ app.get('/', (req, res) => {
     }else{
         username = '';
     }
+    console.log('session sur la page d\'accueil:', req.session);
     res.render('index', {username: username});
 });
 
@@ -41,25 +40,37 @@ app.get('/', (req, res) => {
 // registration routing
 app.get('/register', (req, res) => {
     res.render('register');
-})
-app.post('/register', (req, res) => {
+});
+app.post('/register', async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    bcrypt.hash(password, saltRounds, async (err, hash) => {
-        db.createUser(username, hash).then(result => {
-            if (result === null){
-                res.status(500).send('There was an error creating your account. Please try again.');
-            } else {
-                req.session.user = {
-                    id: result.id,
-                    username: result.username 
-                }
-                res.status(200).redirect('/');
-            }
-        });
-    })
-})
+    try {
+        const hash = await bcrypt.hash(password, saltRounds);
+        const result = await db.createUser(username, hash);
+
+        if (result === null){
+            res.status(500).send('There was an error creating your account, please try again.');
+        } else {
+            req.session.user = {
+                id: result[0].id,
+                username: result[0].username
+            };
+            console.log('User logged in :', req.session.user);
+            res.status(200).redirect('/');
+        }
+    } catch (err) {
+        res.status(500).send('error');
+    }
+});
+
+app.get('/profile', (req, res) => {
+    if (req.session.user) {
+        res.render('profile', { user: req.session.user });
+    } else {
+        res.status(401).send('You are not logged in.');
+    }
+});
 
 // login handling
 app.get('/login', (req, res) => {
