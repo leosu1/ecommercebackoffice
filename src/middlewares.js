@@ -8,10 +8,10 @@ export async function isUserLoggedIn (req) {
 
         if (user === null || user.length === 0) {
             console.log('No user found.')
-            return false
+            return false;
         } else {
             console.log(`User connected : ${user[0].id}`)
-            return true
+            return true;
         }
     }
 }

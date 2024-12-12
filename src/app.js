@@ -5,7 +5,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
-
+import * as fValidator from "./form_validators.js";
 
 /*
     set up and middlewares
@@ -48,7 +48,7 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
-app.post('/register', async (req, res) => {
+app.post('/register', fValidator.registrationFormValidator, async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 

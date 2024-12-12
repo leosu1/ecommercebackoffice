@@ -63,6 +63,25 @@ export async function getUserByUsernameAndPassword(username, password){
     }
 }
 
+export async function isUserAlreadyExists(username){
+    try {
+        const result = await connection.execute(
+            'SELECT username FROM admin_users WHERE username = ?',
+            [username]
+        );
+
+        if (result.length === 0) {
+            return false;
+        }
+
+        return true;
+    } 
+    catch (err) {
+        console.log(`Couldn't complete query to check user : ${err.sqlMessage}`);
+        return null;
+    }
+}
+
 
 export async function createUser(username, password){
     try {
