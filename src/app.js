@@ -137,7 +137,7 @@ app.get('/customers/:customerId/edit', async (req, res) => {
     );
 })
 
-app.post('/customers/:customerId/edit', async (req, res) => {
+app.post('/customers/:customerId/edit', fValidator.customerEditFormValidator, async (req, res) => {
     const customerId = req.params.customerId;
     const newCustomerInfo = req.body;
 
