@@ -42,14 +42,14 @@ CREATE TABLE products (
     rating FLOAT NOT NULL,
     is_available INT NOT NULL,
     category INT NOT NULL,
-    FOREIGN KEY (category) REFERENCES categories (category_id)
+    FOREIGN KEY (category) REFERENCES categories (category_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    from_customer INT NOT NULL,
+    from_customer INT DEFAULT NULL,
     total_price FLOAT NOT NULL DEFAULT 0,
-    to_address INT NOT NULL,
+    to_address INT DEFAULT NULL,
     created_at DATETIME NOT NULL,
     FOREIGN KEY (from_customer) REFERENCES customers (customer_id),
     FOREIGN KEY (to_address) REFERENCES addresses (address_id)
@@ -66,7 +66,7 @@ CREATE TABLE carts (
     belongs_to INT NOT NULL,
     total_price FLOAT NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL,
-    FOREIGN KEY (belongs_to) REFERENCES customers (customer_id)
+    FOREIGN KEY (belongs_to) REFERENCES customers (customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE products_in_carts(
@@ -77,8 +77,8 @@ CREATE TABLE products_in_carts(
 
 CREATE TABLE payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    from_client INT NOT NULL,
-    for_order INT NOT NULL,
+    from_client INT NOT NULL DEFAULT NULL,
+    for_order INT DEFAULT NULL,
     is_fulfilled INT NOT NULL,
     fulfilled_at DATETIME,
     FOREIGN KEY (from_client) REFERENCES customers (customer_id),
