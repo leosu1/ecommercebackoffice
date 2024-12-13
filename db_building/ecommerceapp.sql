@@ -51,8 +51,8 @@ CREATE TABLE orders (
     total_price FLOAT NOT NULL DEFAULT 0,
     to_address INT DEFAULT NULL,
     created_at DATETIME NOT NULL,
-    FOREIGN KEY (from_customer) REFERENCES customers (customer_id),
-    FOREIGN KEY (to_address) REFERENCES addresses (address_id)
+    FOREIGN KEY (from_customer) REFERENCES customers (customer_id) ON DELETE SET NULL,
+    FOREIGN KEY (to_address) REFERENCES addresses (address_id) ON DELETE SET NULL
 );
 
 CREATE TABLE products_in_orders(
@@ -77,10 +77,10 @@ CREATE TABLE products_in_carts(
 
 CREATE TABLE payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    from_client INT NOT NULL DEFAULT NULL,
+    from_client INT DEFAULT NULL,
     for_order INT DEFAULT NULL,
     is_fulfilled INT NOT NULL,
     fulfilled_at DATETIME,
-    FOREIGN KEY (from_client) REFERENCES customers (customer_id),
-    FOREIGN KEY (for_order) REFERENCES orders (order_id)
+    FOREIGN KEY (from_client) REFERENCES customers (customer_id) ON DELETE SET NULL,
+    FOREIGN KEY (for_order) REFERENCES orders (order_id) ON DELETE SET NULL
 );

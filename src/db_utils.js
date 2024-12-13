@@ -153,7 +153,7 @@ export async function editCustomerById (id, customerInfo) {
                 id
             ]
         );
-
+        console.log(result)
         return result;
     }
     catch (err) {
@@ -191,6 +191,78 @@ export async function getCategories() {
     } 
     catch (err) {
         console.log('Could not fetch categories :\n', err.sqlMessage);
+        return null;
+    }
+}
+
+export async function getCategoryById(id) {
+    try {
+        const [result, fields] = await connection.execute(
+            'SELECT category_id, name, description FROM categories WHERE category_id = ?',
+            [id]
+        );
+
+        if (result.length === 0) {
+            console.log(`No category found with id : ${id}`);
+            return null;
+        }
+
+        return result;
+    }
+    catch (err) {
+        console.log(`There was an error getting category with give id :\n${err.sqlMessage}`);
+        return null;
+    }
+}
+
+export async function createCategory(categoryInfo) {
+    try {
+        const [result, fields] = await connection.execute(
+            'INSERT INTO categories (name, description) VALUES (?, ?)',
+            [
+                categoryInfo.name,
+                categoryInfo.description
+            ]
+        );
+
+        return result;
+    }
+    catch (err) {
+        console.log(`Error creating new category :\n ${err.sqlMessage}`);
+        return null;
+    }
+}
+
+export async function editCategoryById(id, categoryInfo) {
+    try {
+        const result = connection.execute(
+            'UPDATE categories SET name = ?, description = ? WHERE category_id = ?',
+            [
+                categoryInfo.name,
+                categoryInfo.description,
+                id
+            ]
+        );
+        console.log(result);
+        return result;
+    }
+    catch (err) {
+        console.log(`An error occured updating category with given id :\n${err}`);
+        return null;
+    }
+}
+
+export async function deleteCategoryById(id) {
+    try {
+        const result = connection.execute(
+            'DELETE FROM categories WHERE category_id = ?',
+            [id]
+        );
+        console.log(result)
+        return result;
+    }
+    catch (err) {
+        console.log(`An error occured deleting category with given id :\n${err}`);
         return null;
     }
 }
