@@ -187,7 +187,7 @@ app.post('/categories/:categoryId/edit', async (req, res) => {
     const categoryId = req.params.categoryId;
     const newCategoryInfo = req.body;
 
-    const modifiedCategory = await db.editCategoryById(categoryId);
+    const modifiedCategory = await db.editCategoryById(categoryId, newCategoryInfo);
 
     if (modifiedCategory === null) {
         res.status(500).send(`An error occured trying to update category ${categoryId}, please try again.`)
@@ -202,7 +202,7 @@ app.get('categories/create', (req, res) => {
 
 app.post('categories/create', async (req, res) => {
     const categoryInfo = req.body;
-    const category = await db.createCategory();
+    const category = await db.createCategory(categoryInfo);
 
     if (category === null || category.length === 0){
         res.status(500).send('There was an error creating the new category, please try again.');

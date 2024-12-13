@@ -8,8 +8,9 @@
 <body>
     <div>
         <h1>Categories</h1>
+        <h2><a href="/categories/create">Create a new category</a></h2>
         <table>
-            
+
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -24,13 +25,14 @@
                     <td><%- category.description %></td>
                     <td><%- category.products_in_category %></td>
                     <td>
-                        <a href="">Edit</a>
-                        <a href="">Remove</a>
+                        <a href="/categories/<%- category.category_id %>/edit">Edit</a>
+                        <a href="/categories/<%- category.category_id %>/delete">Remove</a>
                     </td>
                 </tr>
             <% }) %>
 
         </table>
+
     </div>
 </body>
 </html>
