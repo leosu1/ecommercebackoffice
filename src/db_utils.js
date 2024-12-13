@@ -65,11 +65,11 @@ export async function getUserByUsernameAndPassword(username, password){
 
 export async function isUserAlreadyExists(username){
     try {
-        const result = await connection.execute(
+        const [result, fields] = await connection.execute(
             'SELECT username FROM admin_users WHERE username = ?',
             [username]
         );
-
+        console.log(result);
         if (result.length === 0) {
             return false;
         }
@@ -148,6 +148,21 @@ export async function editCustomerById (id, customerInfo)  {
     }
     catch (err) {
         console.log('Could not modify customer with given id :\n', err.sqlMessage);
+        return null;
+    }
+}
+
+export async function deleteCustomerById (id) {
+    try {
+        const [result, fields] = await connection.execute (
+            'DELETE FROM customers WHERE customer_id = ?', 
+            [id]
+        );
+
+        return result;
+    } 
+    catch (err) {
+        console.log(`Could not delete customer with given id :\n ${err.sqlMessage}`);
         return null;
     }
 }

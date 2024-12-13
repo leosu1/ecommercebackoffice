@@ -8,6 +8,7 @@ export async function registrationFormValidator(req, res, next){
         .isLength({ min: 3, max: 100 }).withMessage('Username must be between 3 and 100 characters.')
         .custom(async username => {
             const user = await db.isUserAlreadyExists(username);
+            console.log(user);
             if (user) {
                 throw new Error ('Username already in use.')
             }

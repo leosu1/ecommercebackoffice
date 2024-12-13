@@ -22,7 +22,7 @@ CREATE TABLE addresses (
     city VARCHAR(50) NOT NULL,
     country VARCHAR(5) NOT NULL,
     customer INT NOT NULL,
-    FOREIGN KEY (customer) REFERENCES customers (customer_id)
+    FOREIGN KEY (customer) REFERENCES customers (customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE categories (

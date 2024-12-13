@@ -151,6 +151,18 @@ app.post('/customers/:customerId/edit', async (req, res) => {
 
 })
 
+app.get('/customers/:customerId/delete', async (req,res) => {
+    const customerId = req.params.customerId;
+
+    const deletedUser = await db.deleteCustomerById(customerId);
+    console.log(deletedUser);
+    if (deletedUser === null) {
+        res.status(500).send(`There was an error trying to remove customer ${customerId}, please try again.`)
+    } else {
+        res.status(200).redirect('/customers');
+    }
+})
+
 
 
 
