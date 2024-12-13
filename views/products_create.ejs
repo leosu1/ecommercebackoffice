@@ -17,7 +17,7 @@
             <div>
                 <label for="category">Product category</label>
                 <select name="category" id="" required>
-                    <option value="" disabled></option>
+                    <option value="" disabled selected></option>
                     <% categories.forEach(category => { %>
                         <option value="<%- category.category_id %>"><%- category.name %></option>
                     <% }) %>
@@ -34,10 +34,6 @@
             <div>
                 <label for="stock">Stock</label>
                 <input type="number" name="stock" required>
-            </div>
-            <div>
-                <label for="is_available">Available</label>
-                <input type="checkbox" name="is_available" id="">
             </div>
 
             <button type="submit">Add</button>

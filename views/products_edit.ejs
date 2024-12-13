@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product creation</title>
+</head>
+<body>
+    <div>
+
+        <h1>Adding a product</h1>
+        <form action="/products/<%- product.product_id %>/edit" method="post">
+            <div>
+                <label for="name">Product name</label>
+                <input type="text" name="name" value="<%- product.name %>" required>
+            </div>
+            <div>
+                <label for="category">Product category</label>
+                <select name="category" id="" required>
+                    <% categories.forEach(category => { %>
+                        <option value="<%- category.category_id %>" 
+                            <% if (category.category_id === product.category) { %>
+                                selected
+                            <% } %>
+                        >
+                            <%- category.name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input type="textarea" name="description"value="<%- product.description %>">
+            </div>
+            <div>
+                <label for="price">Price</label>
+                <input type="number" name="price" value="<%- product.price %>" required>
+            </div>
+            <div>
+                <label for="stock">Stock</label>
+                <input type="number" name="stock" value="<%- product.stock %>" required>
+            </div>
+
+            <button type="submit">Add</button>
+        </form>
+
+    </div>
+</body>
+</html>

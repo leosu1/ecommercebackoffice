@@ -243,7 +243,7 @@ export async function editCategoryById(id, categoryInfo) {
                 id
             ]
         );
-        console.log(result);
+
         return result;
     }
     catch (err) {
@@ -285,6 +285,26 @@ export async function getProductsAndCategory() {
     }
 }
 
+export async function getProductById(id) {
+    try {
+        const result = await connection.execute(
+            'SELECT * FROM products WHERE product_id = ?',
+            [id]
+        );
+
+        if (result.length === 0) {
+            console.log(`No product could be found with id ${id}.`);
+            return null;
+        }
+
+        return result[0][0];
+    }
+    catch (err) {
+        console.log(`An error occured when fetching product with given id (${id}):\n${err}`);
+        return null;
+    }
+}
+
 export async function createProduct(productInfo) {
     try {
         if(productInfo.is_available === 'on'){
@@ -294,14 +314,13 @@ export async function createProduct(productInfo) {
         }
 
         const productResult = await connection.execute(
-            `INSERT INTO products (name, stock, price, description, rating, is_available, category) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO products (name, stock, price, description, rating, category) VALUES (?, ?, ?, ?, ?, ?)`,
             [
                 productInfo.name,
                 productInfo.stock,
                 productInfo.price,
                 productInfo.description,
                 0.0,
-                productInfo.is_available,
                 productInfo.category
             ]
         );
@@ -316,5 +335,61 @@ export async function createProduct(productInfo) {
     catch (err) {
         console.log('Error adding a new product :\n', err);
         return null, null;
+    }
+}
+
+export async function editProductById(id, productInfo, category) {
+    try {
+        const result = await connection.execute(
+            'UPDATE products SET name = ?, description = ?, stock = ?, price = ?, category = ? WHERE product_id = ?',
+            [
+                productInfo.name,
+                productInfo.description,
+                productInfo.stock,
+                productInfo.price,
+                productInfo.category,
+                id
+            ]
+        );
+
+        if(category.hasChanged) {
+            const oldCategory = await connection.execute(
+                'UPDATE categories SET products_in_category = products_in_category - 1 WHERE category_id = ?',
+                [category.oldCategory]
+            );
+
+            const newCategory = await connection.execute(
+                'UPDATE categories SET products_in_category = products_in_category + 1 WHERE category_id = ?',
+                [productInfo.category]
+            );
+
+            return result, oldCategory, newCategory;
+        }
+
+        return result;
+    }
+    catch (err) {
+        console.log(`An error occured updating product with given id (${id}) :\n${err}`);
+        return null;
+    }
+}
+
+export async function deleteProductById(id, catId) {
+    try {
+        const updateCat = connection.execute(
+            'UPDATE categories SET products_in_category = products_in_category - 1 WHERE category_id = ?',
+            [catId]
+        );
+
+        const result = connection.execute(
+            'DELETE FROM products WHERE product_id = ?',
+            [id]
+        );
+
+        return updateCat, result;
+    }
+    catch (err) {
+        console.log(`An error occured deleting product with given id (${id}) :\n${err}`);
+        return null;
     }
 }

@@ -13,13 +13,7 @@ import * as fValidator from "./form_validators.js";
 const app = express();
 const port = 3000;
 const saltRounds = 10;
-
-app.set('view engine', 'ejs');
-app.set('views', path.join('views'));
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(session({
+const sessionConfig = {
     secret: 'aaaaaaaaaaa',
     resave: false,
     saveUninitialized: false,
@@ -28,7 +22,14 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000, //session active for one day
         rolling: true,
     }
-}));
+}
+
+app.set('view engine', 'ejs');
+app.set('views', path.join('views'));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(session(sessionConfig));
 app.use(middleware.routeProtection);
 
 
@@ -186,7 +187,6 @@ app.get('/categories/:categoryId/edit', async (req, res) => {
 app.post('/categories/:categoryId/edit', fValidator.categoriesFormValidator, async (req, res) => {
     const categoryId = req.params.categoryId;
     const newCategoryInfo = req.body;
-    console.log(newCategoryInfo)
     const modifiedCategory = await db.editCategoryById(categoryId, newCategoryInfo);
 
     if (modifiedCategory === null) {
@@ -240,7 +240,7 @@ app.get('/products/create', async (req, res) => {
     const categories = await db.getCategories();
 
     res.render('products_create', {categories: categories});
-})
+});
 
 app.post('/products/create', async (req, res) => {
     const productInfo = req.body;
@@ -252,10 +252,54 @@ app.post('/products/create', async (req, res) => {
         console.log('New product created :', product);
         res.status(200).redirect('/products');
     }    
+});
+
+app.get('/products/:productId/edit', async (req, res) => {
+    const productId = req.params.productId;
+    const product = await db.getProductById(productId);
+    const categories = await db.getCategories();
+
+    res.render('products_edit', {
+        product: product,
+        categories: categories
+    });
+});
+
+app.post('/products/:productId/edit', async (req, res) => {
+    const productId = req.params.productId;
+    const oldProductInfo = await db.getProductById(productId);
+    const newProductInfo = req.body;
+    const category = {
+        hasChanged: false,
+        oldCategory: oldProductInfo.category
+    };
+
+    if (category.oldCategory !== newProductInfo.category) {
+        category.hasChanged = true;
+    }
+
+    const modifiedProduct = await db.editProductById(productId, newProductInfo, category);
+
+    if (modifiedProduct === null) {
+        res.status(500).send(`An error occured trying to update product ${productId}, please try again.`);
+    } else {
+        res.status(200).redirect('/products');
+    }
+});
+
+app.get('/products/:productId/delete', async (req, res) => {
+    const productId = req.params.productId;
+    const product = await db.getProductById(productId);
+    const category = await db.getCategoryById(product.category);
+
+    const deletedProduct = await db.deleteProductById(productId, category[0].category_id);
+
+    if (deletedProduct === null) {
+        res.status(500).send('Error while deleting requested product. Please try again later.');
+    } else {
+        res.status(200).redirect('/products');
+    }
 })
-
-
-
 
 /*
     application start up
