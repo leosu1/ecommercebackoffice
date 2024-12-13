@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+</head>
+<body>
+    <div>
+        <h1>Categories</h1>
+        <table>
+            
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Products inside category</th>
+                <th>Options</th>
+            </tr>
+            <% categories.forEach(category => { %>
+                <tr>
+                    <td><%- category.category_id %></td>
+                    <td><%- category.name %></td>
+                    <td><%- category.description %></td>
+                    <td><%- category.products_in_category %></td>
+                    <td>
+                        <a href="">Edit</a>
+                        <a href="">Remove</a>
+                    </td>
+                </tr>
+            <% }) %>
+
+        </table>
+    </div>
+</body>
+</html>

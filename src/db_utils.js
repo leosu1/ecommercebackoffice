@@ -2,6 +2,9 @@ import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
 import "dotenv/config";
 
+/*
+    connection to the db
+*/
 const connection = await mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USERNAME,
@@ -9,7 +12,11 @@ const connection = await mysql.createConnection({
     database: process.env.DATABASE_NAME
 });
 
-export async function getUserById(id){
+
+/*
+    user related queries
+*/
+export async function getUserById(id) {
     try {
         const [res, fields] = await connection.execute(
             'SELECT * FROM admin_users WHERE id = ?',
@@ -23,7 +30,7 @@ export async function getUserById(id){
     }
 }
 
-export async function getUserByIdAndUsername(id, username){
+export async function getUserByIdAndUsername(id, username) {
     try {
         const [res, fields] = await connection.execute(
             'SELECT * FROM admin_users WHERE id = ? AND username = ?',
@@ -37,7 +44,7 @@ export async function getUserByIdAndUsername(id, username){
     }
 }
 
-export async function getUserByUsernameAndPassword(username, password){
+export async function getUserByUsernameAndPassword(username, password) {
     try {
         const [res, fields] = await connection.execute(
             'SELECT * FROM admin_users WHERE username = ?',
@@ -63,7 +70,7 @@ export async function getUserByUsernameAndPassword(username, password){
     }
 }
 
-export async function isUserAlreadyExists(username){
+export async function isUserAlreadyExists(username) {
     try {
         const [result, fields] = await connection.execute(
             'SELECT username FROM admin_users WHERE username = ?',
@@ -82,7 +89,6 @@ export async function isUserAlreadyExists(username){
     }
 }
 
-
 export async function createUser(username, password){
     try {
         const [results, fields] = await connection.execute(
@@ -98,7 +104,11 @@ export async function createUser(username, password){
     }
 }
 
-export async function getCustomers(){
+
+/*
+    customers related queries
+*/
+export async function getCustomers() {
     try {
         const [result, fields] = await connection.query(
             'SELECT * FROM customers'
@@ -111,7 +121,7 @@ export async function getCustomers(){
     }
 }
 
-export async function getCustomerByID(id){
+export async function getCustomerByID(id) {
     try {
         const [result, fields] = await connection.execute(
             'SELECT * FROM customers WHERE customer_id = ?',
@@ -131,7 +141,7 @@ export async function getCustomerByID(id){
     }
 }
 
-export async function editCustomerById (id, customerInfo)  {
+export async function editCustomerById (id, customerInfo) {
     try  {
         const [result, fields] = await connection.execute (
             'UPDATE customers SET firstname = ?, lastname = ?, email_adress = ?, phone_number = ? WHERE customer_id = ?',
@@ -163,6 +173,24 @@ export async function deleteCustomerById (id) {
     } 
     catch (err) {
         console.log(`Could not delete customer with given id :\n ${err.sqlMessage}`);
+        return null;
+    }
+}
+
+
+/*
+    categories related queries
+*/
+export async function getCategories() {
+    try {
+        const [result, fields] = await connection.query(
+            'SELECT * FROM categories'
+        )
+
+        return result;
+    } 
+    catch (err) {
+        console.log('Could not fetch categories :\n', err.sqlMessage);
         return null;
     }
 }

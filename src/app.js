@@ -135,7 +135,7 @@ app.get('/customers/:customerId/edit', async (req, res) => {
     res.render ('customers_form', 
         {customer: customer[0]}
     );
-})
+});
 
 app.post('/customers/:customerId/edit', fValidator.customerEditFormValidator, async (req, res) => {
     const customerId = req.params.customerId;
@@ -149,13 +149,12 @@ app.post('/customers/:customerId/edit', fValidator.customerEditFormValidator, as
         res.status(200).redirect('/customers');
     }
 
-})
+});
 
 app.get('/customers/:customerId/delete', async (req,res) => {
     const customerId = req.params.customerId;
-
     const deletedUser = await db.deleteCustomerById(customerId);
-    console.log(deletedUser);
+
     if (deletedUser === null) {
         res.status(500).send(`There was an error trying to remove customer ${customerId}, please try again.`)
     } else {
@@ -164,6 +163,65 @@ app.get('/customers/:customerId/delete', async (req,res) => {
 })
 
 
+/*
+    category administration
+*/
+app.get('/categories', async (req, res) => {
+    const categories = await db.getCategories();
+
+    if (categories === null) {
+        res.status(500).send('Error fetching categories. Please try again later.');
+    }
+
+    res.render('categories', {categories: categories});
+});
+
+app.get('categories/:categoryId/edit', async (req, res) => {
+    const categoryId = req.params.categoryId;
+    const category = await db.getCategoryById(categoryId);
+
+    res.render('category_edit', {category: category});
+});
+
+app.post('/categories/:categoryId/edit', async (req, res) => {
+    const categoryId = req.params.categoryId;
+    const newCategoryInfo = req.body;
+
+    const modifiedCategory = await db.editCategoryById(categoryId);
+
+    if (modifiedCategory === null) {
+        res.status(500).send(`An error occured trying to update category ${categoryId}, please try again.`)
+    } else {
+        res.status(200).redirect('/categories');
+    }
+});
+
+app.get('categories/create', (req, res) => {
+    res.render('category_creation');
+});
+
+app.post('categories/create', async (req, res) => {
+    const categoryInfo = req.body;
+    const category = await db.createCategory();
+
+    if (category === null || category.length === 0){
+        res.status(500).send('There was an error creating the new category, please try again.');
+    } else {
+        console.log('New category created :', category[0].category_id);
+        res.status(200).redirect('/categories');
+    }    
+});
+
+app.get('/category/:categoryId/delete', async (req, res) => {
+    const categoryId = req.params.categoryId;
+    const deletedCategory = await db.deleteCategoryById(categoryId);
+
+    if (deletedCategory === null) {
+        res.status(500).send(`There was an error trying to remove category ${categoryId}, please try again.`)
+    } else {
+        res.status(200).redirect('/categories');
+    }
+});
 
 
 /*
