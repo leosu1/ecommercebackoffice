@@ -183,7 +183,7 @@ app.get('/categories/:categoryId/edit', async (req, res) => {
     res.render('categories_edit', {category: category[0]});
 });
 
-app.post('/categories/:categoryId/edit', async (req, res) => {
+app.post('/categories/:categoryId/edit', fValidator.categoriesFormValidator, async (req, res) => {
     const categoryId = req.params.categoryId;
     const newCategoryInfo = req.body;
     console.log(newCategoryInfo)
@@ -200,7 +200,7 @@ app.get('/categories/create', (req, res) => {
     res.render('categories_creation');
 });
 
-app.post('/categories/create', async (req, res) => {
+app.post('/categories/create', fValidator.categoriesFormValidator, async (req, res) => {
     const categoryInfo = req.body;
     const category = await db.createCategory(categoryInfo);
 

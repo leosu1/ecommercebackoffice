@@ -72,3 +72,24 @@ export async function customerEditFormValidator(req, res, next) {
 
     next();
 }
+
+export async function categoriesFormValidator(req, res, next) {
+    await check('name')
+        .isLength({min: 3, max: 50}).withMessage('Category name must be between 3 and 50 characters.')
+        .run(req)
+    ;
+
+    await check('description')
+        .isLength({max: 500}).withMessage('Category description cannot exceed 500 characters.')
+        .run(req)
+    ;
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    next();
+}
