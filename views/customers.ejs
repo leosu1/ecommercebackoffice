@@ -27,7 +27,7 @@
                 <td><%- customer.phone_number %></td>
                 <td><%- customer.created_at.toDateString() %></td>
                 <td>
-                    <a href="">Edit</a>
+                    <a href="/customers/<%- customer.customer_id %>/edit">Edit</a>
                     <a href="">Remove</a>
                 </td>
             </tr>

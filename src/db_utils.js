@@ -110,3 +110,44 @@ export async function getCustomers(){
         return null;
     }
 }
+
+export async function getCustomerByID(id){
+    try {
+        const [result, fields] = await connection.execute(
+            'SELECT * FROM customers WHERE customer_id = ?',
+            [id]
+        );
+
+        if(result.length === 0){
+            console.log(`Could not find a customer with specified Id : ${id}`);
+            return null;
+        }
+
+        return result;
+    } 
+    catch (err) {
+        console.log(`Requested data could not be found : \n ${err.sqlMessage}`);
+        return null;
+    }
+}
+
+export async function editCustomerById (id, customerInfo)  {
+    try  {
+        const [result, fields] = await connection.execute (
+            'UPDATE customers SET firstname = ?, lastname = ?, email_adress = ?, phone_number = ? WHERE customer_id = ?',
+            [
+                customerInfo.firstname,
+                customerInfo.lastname,
+                customerInfo.email_adress,
+                customerInfo.phone_number,
+                id
+            ]
+        );
+
+        return result;
+    }
+    catch (err) {
+        console.log('Could not modify customer with given id :\n', err.sqlMessage);
+        return null;
+    }
+}

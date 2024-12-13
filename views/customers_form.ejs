@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Customer edition</h1>
+    <form action="/customers/<%- customer.customer_id %>/edit" method="post">
+        <div>
+            <label for="firstname">Customer Firstname</label>
+            <input type="text" value="<%- customer.firstname %>" name="firstname" required>
+        </div>
+        <div>
+            <label for="lastname">Customer Lastname</label>
+            <input type="text" value="<%- customer.lastname %>" name="lastname" required>
+        </div>
+        <div>
+            <label for="email_adress">Customer email address</label>
+            <input type="text" value="<%- customer.email_adress %>" name="email_adress" required>
+        </div>
+        <div>
+            <label for="phone_number">Customer phone number</label>
+            <input type="text" value="<%- customer.phone_number %>" name="phone_number" required>
+        </div>
+
+        <button type="submit">Save changes</button>
+    </form>
+</body>
+</html>

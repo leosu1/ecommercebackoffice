@@ -122,11 +122,34 @@ app.get('/logout', (req, res) => {
 */
 app.get('/customers', async (req, res) => {
     const customers = await db.getCustomers();
-    console.log(customers);
+
     res.render('customers', {
         customers: customers,
     });
 });
+
+app.get('/customers/:customerId/edit', async (req, res) => {
+    const customerId = req.params.customerId;
+    const customer = await db.getCustomerByID(customerId);   
+
+    res.render ('customers_form', 
+        {customer: customer[0]}
+    );
+})
+
+app.post('/customers/:customerId/edit', async (req, res) => {
+    const customerId = req.params.customerId;
+    const newCustomerInfo = req.body;
+
+    const modifiedCustomer = await db.editCustomerById(customerId, newCustomerInfo);
+
+    if (modifiedCustomer === null) {
+        res.status(500).send(`An error occured trying to update customer ${customerId}, please try again.`)
+    } else {
+        res.status(200).redirect('/customers');
+    }
+
+})
 
 
 
