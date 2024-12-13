@@ -266,3 +266,55 @@ export async function deleteCategoryById(id) {
         return null;
     }
 }
+
+
+/*
+    product related queries
+*/
+export async function getProductsAndCategory() {
+    try {
+        const result = await connection.query(
+            'SELECT products.*, categories.name AS category_name FROM products INNER JOIN categories ON categories.category_id = products.category'    
+        )
+
+        return result[0];
+    }
+    catch (err) {
+        console.log(`An error occured fetching products and their categories :\n${err}`);
+        return null;
+    }
+}
+
+export async function createProduct(productInfo) {
+    try {
+        if(productInfo.is_available === 'on'){
+            productInfo.is_available = 1;
+        }else if (productInfo.is_available === 'off'){
+            productInfo.is_available = 0;
+        }
+
+        const productResult = await connection.execute(
+            `INSERT INTO products (name, stock, price, description, rating, is_available, category) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+                productInfo.name,
+                productInfo.stock,
+                productInfo.price,
+                productInfo.description,
+                0.0,
+                productInfo.is_available,
+                productInfo.category
+            ]
+        );
+
+        const categoryUpdate = await connection.execute(
+            'UPDATE categories SET products_in_category = products_in_category + 1 WHERE category_id = ?',
+            [productInfo.category]
+        );
+
+        return productResult, categoryUpdate;
+    }
+    catch (err) {
+        console.log('Error adding a new product :\n', err);
+        return null, null;
+    }
+}

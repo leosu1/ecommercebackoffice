@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+<body>
+    <div>
+
+        <h1>Products</h1>
+        <h2><a href="/products/create">Ajouter un produit</a></h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Product name</th>
+                <th>Product category</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Rating</th>
+                <th>Stock</th>
+                <th>Availability</th>
+                <th>Options</th>
+            </tr>
+            <% products.forEach(product => { %>
+            <tr>
+                <td><%- product.product_id %></td>
+                <td><%- product.name %></td>
+                <td><%- product.category_name %></td>
+                <td><%- product.description %></td>
+                <td><%- product.price %>€</td>
+                <td><%- product.rating %>/5</td>
+                <td><%- product.stock %></td>
+                <td><%- product.is_available %></td>
+                <td>
+                    <a href="">Edit</a>
+                    <a href="">Delete</a>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+
+    </div>
+</body>
+</html>

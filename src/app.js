@@ -171,9 +171,9 @@ app.get('/categories', async (req, res) => {
 
     if (categories === null) {
         res.status(500).send('Error fetching categories. Please try again later.');
+    } else {
+        res.render('categories', {categories: categories});
     }
-
-    res.render('categories', {categories: categories});
 });
 
 app.get('/categories/:categoryId/edit', async (req, res) => {
@@ -222,6 +222,39 @@ app.get('/categories/:categoryId/delete', async (req, res) => {
         res.status(200).redirect('/categories');
     }
 });
+
+/*
+    product administration
+*/
+app.get('/products', async (req, res) => {
+    const products = await db.getProductsAndCategory()
+
+    if (products === null) {
+        res.status(200).send('Error fetching products, please try again later.');
+    } else {
+        res.render('products', {products: products});
+    }
+});
+
+app.get('/products/create', async (req, res) => {
+    const categories = await db.getCategories();
+
+    res.render('products_create', {categories: categories});
+})
+
+app.post('/products/create', async (req, res) => {
+    const productInfo = req.body;
+    const product = await db.createProduct(productInfo);
+
+    if (product === null || product.length === 0){
+        res.status(500).send('There was an error creating the new product, please try again.');
+    } else {
+        console.log('New product created :', product);
+        res.status(200).redirect('/products');
+    }    
+})
+
+
 
 
 /*
