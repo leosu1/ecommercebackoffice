@@ -59,7 +59,7 @@ export async function getUserByUsernameAndPassword(username, password){
     } 
     catch (err) {
         console.log(`Couldn't fetch user :\n${err.sqlMessage}`);
-        return null;
+        return 0;
     }
 }
 

@@ -87,10 +87,12 @@ app.post('/login', async (req, res) => {
 
     try {
         const user = await db.getUserByUsernameAndPassword(username, password);
-        console.log(user)
+        console.log(user);
         if (user === null){
+            res.status(400).send('Username or password incorrect. Please try again.');
+        } else if (user === 0) {
             res.status(500).send('There was an error logging you in, please try again.');
-        } else {
+        } else { 
             req.session.user = {
                 id: user.id,
                 username: user.username
