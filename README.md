@@ -8,7 +8,7 @@ Une application web de démonstration de back office en nodejs avec expressjs.
 - Créer votre base de données **mysql** et appelez la comme vous voulez.
 - Dans un terminal ouvert dans le repertoire de l'application, taper la commande :
 
-    mysql -u *votrenomdutilisateur* -p *nom_de_la_bdd* < db_building/ecommerceapp.sql
+    `mysql -u *votrenomdutilisateur* -p *nom_de_la_bdd* < db_building/ecommerceapp.sql`
 
 - Pour ajouter des données de test, dans le même terminal, taper la commande :
 
@@ -16,22 +16,22 @@ Une application web de démonstration de back office en nodejs avec expressjs.
 
 - A la racine du répertoire, créer un fichier *.env* dans lequel il faut renseigner les données suivantes :
 
-    DATABASE_NAME = "*nom_de_la_bdd*"\
+    `DATABASE_NAME = "*nom_de_la_bdd*"\
     DATABASE_USERNAME = "*nom_d_utilisateur_de_la_bdd*"\
     DATABASE_PASSWORD = "*mot_de_passe_de_la_bdd*"\
-    DATABASE_HOST = "*port_ou_hote_de_la_bdd*"
+    DATABASE_HOST = "*port_ou_hote_de_la_bdd*"`
 
 - Installer les dépendances à l'aide de **npm** avec la commande :
 
-    npm install
+    `npm install`
 
 - Une fois la base de données créée et configurée, les dépendances installées, taper la commande :
 
-    npm run dev
+    `npm run dev`
 
 - L'application démarera alors à l'adresse 
 
-    localhost:3000/
+    `localhost:3000/`
 
 **- Vous pouvez maintenant vous créer un compte et commencer à manipuler les données de la base de données!** 
 
