@@ -16,10 +16,10 @@ Une application web de démonstration de back office en nodejs avec expressjs.
 
 - A la racine du répertoire, créer un fichier *.env* dans lequel il faut renseigner les données suivantes :
 
-    `DATABASE_NAME = "*nom_de_la_bdd*"\
-    DATABASE_USERNAME = "*nom_d_utilisateur_de_la_bdd*"\
-    DATABASE_PASSWORD = "*mot_de_passe_de_la_bdd*"\
-    DATABASE_HOST = "*port_ou_hote_de_la_bdd*"`
+    > DATABASE_NAME = "*nom_de_la_bdd*"\
+      DATABASE_USERNAME = "*nom_d_utilisateur_de_la_bdd*"\
+      DATABASE_PASSWORD = "*mot_de_passe_de_la_bdd*"\
+      DATABASE_HOST = "*port_ou_hote_de_la_bdd*"
 
 - Installer les dépendances à l'aide de **npm** avec la commande :
 
