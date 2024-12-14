@@ -1,4 +1,3 @@
-
 CREATE TABLE customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     firstname VARCHAR(100) NOT NULL,
@@ -56,8 +55,8 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE products_in_orders(
-    order_id INTEGER REFERENCES orders(order_id),
-    product_id INTEGER REFERENCES products(product_id),
+    order_id INTEGER REFERENCES orders(order_id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products(product_id) ON DELETE CASCADE,
     PRIMARY KEY (order_id, product_id)
 );
 

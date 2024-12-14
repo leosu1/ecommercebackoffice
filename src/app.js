@@ -242,7 +242,7 @@ app.get('/products/create', async (req, res) => {
     res.render('products_create', {categories: categories});
 });
 
-app.post('/products/create', async (req, res) => {
+app.post('/products/create', fValidator.productFormValidator, async (req, res) => {
     const productInfo = req.body;
     const product = await db.createProduct(productInfo);
 
@@ -265,7 +265,7 @@ app.get('/products/:productId/edit', async (req, res) => {
     });
 });
 
-app.post('/products/:productId/edit', async (req, res) => {
+app.post('/products/:productId/edit', fValidator.productFormValidator, async (req, res) => {
     const productId = req.params.productId;
     const oldProductInfo = await db.getProductById(productId);
     const newProductInfo = req.body;
@@ -299,7 +299,7 @@ app.get('/products/:productId/delete', async (req, res) => {
     } else {
         res.status(200).redirect('/products');
     }
-})
+});
 
 /*
     application start up

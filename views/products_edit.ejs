@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product creation</title>
+    <title>Product edit</title>
 </head>
 <body>
     <div>
 
-        <h1>Adding a product</h1>
+        <h1>Editing a product</h1>
         <form action="/products/<%- product.product_id %>/edit" method="post">
             <div>
                 <label for="name">Product name</label>
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <label for="price">Price</label>
-                <input type="number" name="price" value="<%- product.price %>" required>
+                <input type="number" name="price" value="<%- product.price %>" step="0.01" required>
             </div>
             <div>
                 <label for="stock">Stock</label>

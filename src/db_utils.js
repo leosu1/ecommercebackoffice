@@ -307,21 +307,22 @@ export async function getProductById(id) {
 
 export async function createProduct(productInfo) {
     try {
-        if(productInfo.is_available === 'on'){
-            productInfo.is_available = 1;
-        }else if (productInfo.is_available === 'off'){
+        productInfo.is_available = 1;
+
+        if(productInfo.stock === 0){
             productInfo.is_available = 0;
         }
 
         const productResult = await connection.execute(
-            `INSERT INTO products (name, stock, price, description, rating, category) VALUES (?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO products (name, stock, price, description, rating, category, is_available) VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
                 productInfo.name,
                 productInfo.stock,
                 productInfo.price,
                 productInfo.description,
                 0.0,
-                productInfo.category
+                productInfo.category,
+                productInfo.is_available
             ]
         );
 
@@ -340,14 +341,21 @@ export async function createProduct(productInfo) {
 
 export async function editProductById(id, productInfo, category) {
     try {
+        productInfo.is_available = 1;
+
+        if(productInfo.stock === 0){
+            productInfo.is_available = 0;
+        }
+
         const result = await connection.execute(
-            'UPDATE products SET name = ?, description = ?, stock = ?, price = ?, category = ? WHERE product_id = ?',
+            'UPDATE products SET name = ?, description = ?, stock = ?, price = ?, category = ?, is_available = ? WHERE product_id = ?',
             [
                 productInfo.name,
                 productInfo.description,
                 productInfo.stock,
                 productInfo.price,
                 productInfo.category,
+                productInfo.is_available,
                 id
             ]
         );

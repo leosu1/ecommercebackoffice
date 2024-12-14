@@ -93,3 +93,39 @@ export async function categoriesFormValidator(req, res, next) {
 
     next();
 }
+
+export async function productFormValidator (req, res, next) {
+    await check ('name')
+        .isLength({min:2, max: 50}).withMessage('Product name cannot exceed 500 characters.')
+        .run(req)
+    ;
+
+    await check('description')
+        .isLength({max: 500}).withMessage('Product description cannot exceed 500 characters.')
+        .run(req)
+    ;
+    
+    await check('category')
+        .notEmpty().withMessage('Please select a category for the product.')
+        .run(req)
+    ;
+
+    await check('price')
+        .isFloat().withMessage('Price must be a decimal number.')
+        .run(req)
+    ;
+
+    await check('stock')
+        .isInt().withMessage('Price must be a round number.')
+        .run(req)
+    ;
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    next();
+}
