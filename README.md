@@ -12,7 +12,7 @@ Une application web de démonstration de back office en nodejs avec expressjs.
 
 - Pour ajouter des données de test, dans le même terminal, taper la commande :
 
-    mysql -u *votrenomdutilisateur* -p *nom_de_la_bdd* < db_building/ecommerceappdump.sql
+    `mysql -u *votrenomdutilisateur* -p *nom_de_la_bdd* < db_building/ecommerceappdump.sql`
 
 - A la racine du répertoire, créer un fichier *.env* dans lequel il faut renseigner les données suivantes :
 
