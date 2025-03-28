@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: 'Install mysql and setup database'
         run: |
-          sudo /etc/init.d/mysql
+          sudo /etc/init.d/mysql start
           sudo mysql -u root -p root
           create database ecommerceapp;
           quit;
