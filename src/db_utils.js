@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
-require('dotenv').config({path: '../.env'})
+import 'dotenv/config'
 
 /*
     connection to the db
