@@ -17,7 +17,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install mysql-server
-          sudo mysql -u root
+          sudo mysql --host=127.0.0.1 -u root -p
           create database ecommerceapp;
           quit;
           sudo mysql -u root ecommerceapp < ./db_building/ecommerceapp.sql
