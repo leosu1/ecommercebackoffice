@@ -24,10 +24,10 @@ jobs:
       - name: 'Create .env file'
         run: |
           touch .env
-          echo "DATABASE_NAME = 'ecommerceapp'" >> .env
-          echo "DATABASE_USERNAME = 'root'" >> .env
-          echo "DATABASE_PASSWORD = 'root'" >> .env
-          echo "DATABASE_HOST = 'localhost' >> .env
+          echo 'DATABASE_NAME = "ecommerceapp"' >> .env
+          echo 'DATABASE_USERNAME = "root"' >> .env
+          echo 'DATABASE_PASSWORD = "root"' >> .env
+          echo 'DATABASE_HOST = "localhost"' >> .env
           ls -la
           cat .env
       - uses: actions/checkout@v2
