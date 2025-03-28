@@ -1,10 +1,6 @@
 name: Continuous integration
 
-on: 
-  push:
-    branches: [workflows]
-  pull_request:
-    branches: [main]
+on: [push]
 
 jobs: 
   testRunning:
