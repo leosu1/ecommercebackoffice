@@ -26,8 +26,8 @@ jobs:
           touch .env
           echo "DATABASE_NAME = 'ecommerceapp'" >> .env
           echo "DATABASE_USERNAME = 'root'" >> .env
-          echo "DATABASE_PASSWORD = ''" >> .env
-          echo "DATABASE_HOST = '127.0.0.1' >> .env
+          echo "DATABASE_PASSWORD = 'root'" >> .env
+          echo "DATABASE_HOST = 'localhost' >> .env
           ls -la
           cat .env
       - uses: actions/checkout@v2
