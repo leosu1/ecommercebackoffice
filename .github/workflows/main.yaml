@@ -1,10 +1,6 @@
 name: Continuous integration
 
-on: 
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push]
 
 jobs: 
   testRunning:
@@ -13,11 +9,32 @@ jobs:
       matrix:
         node-version: [23.x]
     steps:
+      - name: get code
+        uses: actions/checkout@v4
+      - run: ls -la ${{ github.workspace }}
+      - name: 'Install mysql and setup database'
+        run: |
+          sudo /etc/init.d/mysql start
+          sudo mysql -e 'CREATE DATABASE ecommerceapp;' -uroot -proot
+          sudo mysql -uroot -proot ecommerceapp < ./db_building/ecommerceapp.sql
+          sudo mysql -e 'CREATE USER "runner"@"localhost" IDENTIFIED BY "runnerpwd";' -uroot -proot
+          sudo mysql -e 'GRANT ALL PRIVILEGES ON *.* TO "runner"@"localhost";' -uroot -proot
+          sudo mysql -e 'FLUSH PRIVILEGES;' -uroot -proot
       - uses: actions/checkout@v2
-      - name: Use Node.js
+      - name: setup node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
+      - run: npm update
+      - name: 'Create .env file'
+        run: |
+          touch .env
+          echo 'DATABASE_NAME = "ecommerceapp"' >> .env
+          echo 'DATABASE_USERNAME = "runner"' >> .env
+          echo 'DATABASE_PASSWORD = "runnerpwd"' >> .env
+          echo 'DATABASE_HOST = "localhost"' >> .env
+          ls -la
+          cat .env
       - run: npm run test

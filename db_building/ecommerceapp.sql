@@ -1,6 +1,3 @@
-CREATE DATABASE ecommerce_backoffice;
-USE ecommerce_backoffice;
-
 CREATE TABLE customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     firstname VARCHAR(100) NOT NULL,

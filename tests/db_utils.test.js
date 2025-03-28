@@ -45,7 +45,6 @@ test('Creates a product and inserts it into the database', async () => {
         category: 1
     };
     let createdProduct = await db.createProduct(productInfo);
-    console.log(createdProduct)
     expect(createdProduct).not.toBe(null);
     expect(createdProduct[0].serverStatus).toBe(2);
     let removeProduct = await db.deleteProductById(createdProduct[0].insertId, 1);

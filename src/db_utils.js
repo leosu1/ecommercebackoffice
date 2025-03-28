@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
-import "dotenv/config";
+import 'dotenv/config'
 
 /*
     connection to the db

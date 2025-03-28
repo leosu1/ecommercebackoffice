@@ -1,0 +1,13 @@
+name: Continuous development
+on:
+  merge:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  updateApp:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "merge request successful"
+
