@@ -1,10 +1,23 @@
-name: Actions when pushing on main
-on: [push]
+name: Continuous integration
+
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs: 
   testRunning:
     runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        node-version: [23.x]
     steps:
-      - run: apt update && apt install node
-      - run: npm install
-      - run: ls -la
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
       - run: npm run test
