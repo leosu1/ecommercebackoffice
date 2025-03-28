@@ -14,9 +14,10 @@ jobs:
         node-version: [23.x]
     steps:
       - name: 'Install mysql and setup database'
-        run: sudo /etc/init.d/mysql start
-        run: sudo mysql -e 'CREATE DATABASE ecommerceapp;', -uroot -proot
-        run: sudo mysql -uroot -proot ecommerceapp < ./db_building/ecommerceapp.sql
+        run: |
+          sudo /etc/init.d/mysql start
+          sudo mysql -e 'CREATE DATABASE ecommerceapp;', -uroot -proot
+          sudo mysql -uroot -proot ecommerceapp < ./db_building/ecommerceapp.sql
       - name: 'Create .env file'
         run: |
           touch .env
