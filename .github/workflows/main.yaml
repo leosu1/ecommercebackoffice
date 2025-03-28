@@ -16,7 +16,7 @@ jobs:
       - name: 'Install mysql and setup database'
         run: |
           sudo /etc/init.d/mysql start
-          sudo mysql -e 'CREATE DATABASE ecommerceapp;', -uroot -proot
+          sudo mysql -e 'CREATE DATABASE ecommerceapp;' -uroot -proot
           sudo mysql -uroot -proot ecommerceapp < ./db_building/ecommerceapp.sql
       - name: 'Create .env file'
         run: |
