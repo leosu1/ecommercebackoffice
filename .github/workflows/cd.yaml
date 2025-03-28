@@ -1,7 +1,5 @@
 name: Continuous development
 on:
-  merge:
-    branches: [main]
   pull_request:
     branches: [main]
 
