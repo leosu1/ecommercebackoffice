@@ -30,7 +30,7 @@ jobs:
           echo 'DATABASE_NAME = "ecommerceapp"' >> .env
           echo 'DATABASE_USERNAME = "runner"' >> .env
           echo 'DATABASE_PASSWORD = "runnerpwd"' >> .env
-          echo 'DATABASE_HOST = "localhost"' >> .env
+          echo 'DATABASE_HOST = "ta mere"' >> .env
           ls -la
           cat .env
       - uses: actions/checkout@v2
