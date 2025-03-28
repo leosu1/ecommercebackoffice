@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: get code
         uses: actions/checkout@v4
-      - run: ls -la ${{ github.repository }}
+      - run: ls -la ${{ github.workspace }}
       - name: 'Install mysql and setup database'
         run: |
           sudo /etc/init.d/mysql start
