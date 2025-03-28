@@ -90,6 +90,10 @@ export async function isUserAlreadyExists(username) {
 }
 
 export async function createUser(username, password){
+    console.log(process.env.DATABASE_HOST)
+    console.log(process.env.DATABASE_NAME)
+    console.log(process.env.DATABASE_USERNAME)
+    console.log(process.env.DATABASE_PASSWORD)
     try {
         const [results, fields] = await connection.execute(
             'INSERT INTO admin_users (username, password) VALUES (?, ?)',
