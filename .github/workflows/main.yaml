@@ -16,7 +16,7 @@ jobs:
       - name: 'Install mysql and setup database'
         run: |
           sudo apt-get update
-          sudo apt-get install mysqlserver
+          sudo apt-get install mysql-server
           sudo mysql -u root
           create database ecommerceapp;
           quit;
