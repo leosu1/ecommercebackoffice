@@ -24,12 +24,7 @@ jobs:
           sudo mysql -e 'CREATE USER "runner"@"localhost" IDENTIFIED BY "runnerpwd";' -uroot -proot
           sudo mysql -e 'GRANT ALL PRIVILEGES ON *.* TO "runner"@"localhost";' -uroot -proot
           sudo mysql -e 'FLUSH PRIVILEGES;' -uroot -proot
-      - uses: actions/checkout@v2
-      - name: setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+      - name: 'Create .env file'
         run: |
           touch .env
           echo 'DATABASE_NAME = "ecommerceapp"' >> .env
@@ -38,6 +33,13 @@ jobs:
           echo 'DATABASE_HOST = "localhost"' >> .env
           ls -la
           cat .env
+      - uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          run: ls -la
       - run: npm install
       - run: npm update
       - run: npm run test
