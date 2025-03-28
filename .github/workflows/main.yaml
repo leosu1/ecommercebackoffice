@@ -2,7 +2,7 @@ name: Continuous integration
 
 on: 
   push:
-    branches: [main]
+    branches: [workflows]
   pull_request:
     branches: [main]
 
@@ -13,6 +13,7 @@ jobs:
       matrix:
         node-version: [23.x]
     steps:
+      - run: ls -la
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v2
