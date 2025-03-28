@@ -1,0 +1,10 @@
+name: Actions when pushing on main
+on: [push]
+jobs: 
+  testRunning:
+    runs-on: ubuntu-latest
+    steps:
+      - run: apt update && apt install node
+      - run: npm install
+      - run: ls -la
+      - run: npm run test
