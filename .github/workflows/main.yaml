@@ -13,6 +13,8 @@ jobs:
       matrix:
         node-version: [23.x]
     steps:
+      - name: get code
+        uses: actions/checkout@v4
       - run: ls -la ${{ github.repository }}
       - name: 'Install mysql and setup database'
         run: |
