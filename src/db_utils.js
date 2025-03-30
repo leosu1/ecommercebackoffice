@@ -5,6 +5,7 @@ import 'dotenv/config'
 /*
     connection to the db
 */
+
 const connection = await mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USERNAME,
