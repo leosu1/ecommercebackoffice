@@ -94,7 +94,7 @@ export async function createUser(username, password){
     try {
         const [results, fields] = await connection.execute(
             'INSERT INTO admin_users (username, password) VALUES (?, ?)',
-            [username, password]
+            [username, password, blabla]
         ); 
         console.log(`New admin added to database (id: ${results.insertId})`);
         return await getUserById(results.insertId);
