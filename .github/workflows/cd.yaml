@@ -1,12 +1,17 @@
 name: Continuous development
 on:
-  merge:
-    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  updateApp:
+  updateAndBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v4
+      - run: docker build -t leosu1/ecommercebackoffice .
+      - run: docker push leosu1/ecommercebackoffice
+  confirmApp:
     runs-on: ubuntu-latest
     steps:
       - run: echo "merge request successful"

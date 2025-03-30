@@ -1,12 +1,4 @@
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '8080:3000'
-    networks:
-      - node
   db:
     image: mysql:latest
     restart: always
@@ -19,6 +11,29 @@ services:
       - ./mysql-data:/var/lib/mysql 
     networks:
       - node
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
+      timeout: 10s
+  web:
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - node
+    environment:
+      - DATABASE_NAME=ecommerceapp
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_HOST=db
+    
 
 networks:
   node:
