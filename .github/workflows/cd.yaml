@@ -7,6 +7,11 @@ jobs:
   updateAndBuild:
     runs-on: ubuntu-latest
     steps:
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: get code
         uses: actions/checkout@v4
       - run: docker build -t leosu1/ecommercebackoffice .
